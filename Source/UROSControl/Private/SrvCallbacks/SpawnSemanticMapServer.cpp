@@ -1,6 +1,6 @@
 // Copyright 2017-2019, Institute for Artificial Intelligence - University of Bremen
 
-#include "SpawnSemanticMapServer.h"
+#include "SrvCallbacks/SpawnSemanticMapServer.h"
 #include "Ids.h"
 #include "Conversions.h"
 #include "AssetSpawner.h"
@@ -62,9 +62,10 @@ TSharedPtr<FROSBridgeSrv::SrvResponse> FROSSpawnSemanticMapServer::Callback(
 
 		// Execute on game thread
     FString FinalActorName;
+	FString ErrType;
 		FGraphEventRef Task = FFunctionGraphTask::CreateAndDispatchWhenReady([&]()
 		{
-			bSuccess = FAssetSpawner::SpawnAsset(World, Params, FinalActorName);
+			bSuccess = FAssetSpawner::SpawnAsset(World, Params, FinalActorName, ErrType);
 		}, TStatId(), nullptr, ENamedThreads::GameThread);
 
 		//wait code above to complete

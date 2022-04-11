@@ -14,5 +14,6 @@ class UROSCONTROL_API UWorldControlGameInstance : public UROSBridgeGameInstance
 {
   GENERATED_BODY()
 
+protected:
     virtual void OnStart() override;
 };

@@ -16,17 +16,17 @@
   "Modules": [
     {
       "Name": "UROSControl",
-      "Type": "Developer",
+      "Type": "Runtime",
       "LoadingPhase": "Default"
     },
     {
       "Name": "UWorldControl",
-      "Type": "Developer",
+      "Type": "Runtime",
       "LoadingPhase": "Default"
     },
     {
       "Name": "UCheckpointSystem",
-      "Type": "Developer",
+      "Type": "Runtime",
       "LoadingPhase": "Default"
     }
   ],
@@ -38,6 +38,14 @@
     {
       "Name": "UUTils",
       "Enabled": true
+    },
+    {
+      "Name": "CustomMeshComponent",
+      "Enabled": true
+    },
+    {
+      "Name": "ProceduralMeshComponent",
+      "Enabled": true
     }
-  ]
+]
 }

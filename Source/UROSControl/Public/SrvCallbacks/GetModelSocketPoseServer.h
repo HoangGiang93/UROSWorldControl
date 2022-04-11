@@ -1,4 +1,4 @@
-// Copyright 2017-2019, Institute for Artificial Intelligence - University of Bremen
+// Copyright 2017-2021, Institute for Artificial Intelligence - University of Bremen
 
 #pragma once
 #include "CoreMinimal.h"
@@ -7,24 +7,22 @@
 #include "ROSBridgeSrvServer.h"
 #include "ROSBridgeSrv.h"
 #include "RWCManager.h"
-#include "world_control_msgs/srv/AttachModelToParent.h"
 
 
-class FROSAttachModelToParentServer final : public FROSBridgeSrvServer
+class FROSGetModelSocketPoseServer final : public FROSBridgeSrvServer
 {
-	
 private:
-	FROSAttachModelToParentServer(){};
+	FROSGetModelSocketPoseServer();
 
 	UWorld* World;
 	FThreadSafeBool ServiceSuccess;
 
 	URWCManager* Controller;
 
-
 public:
-	FROSAttachModelToParentServer(FString Namespace, FString Name, UWorld* InWorld, URWCManager* InController) :
-		FROSBridgeSrvServer(Namespace + TEXT("/") + Name, TEXT("world_control_msgs/AttachModelToParent"))
+	FROSGetModelSocketPoseServer(FString Namespace, FString Name, UWorld* InWorld,
+		URWCManager* InController) :
+		FROSBridgeSrvServer(Namespace + TEXT("/") + Name, TEXT("world_control_msgs/GetModelSocketPose"))
 	{
 		World = InWorld;
 		Controller = InController;

@@ -1,14 +1,13 @@
 #pragma once
 #include "ROSBridgeSrv.h"
-#include "world_control_msgs/msgs/PhysicsProperties.h"
 
-class UROSBRIDGE_API FROSSetPhysicsPropertiesSrv : public FROSBridgeSrv
+class UROSCONTROL_API FROSObjectToObjectSrv : public FROSBridgeSrv
 {
 protected:
 	FString Type;
 
 public:
-	FROSSetPhysicsPropertiesSrv(FString InType)
+	FROSObjectToObjectSrv(FString InType)
 	{
 		Type = InType;
 	}
@@ -16,33 +15,32 @@ public:
 	class Request : public SrvRequest
 	{
 	private:
-		FString Id;
-		world_control_msgs::PhysicsProperties PhysicsProperties;
-
+		FString source_object_id;
+		FString other_object_id;
 
 	public:
-		Request() {}
+		Request(){}
 
-		Request(FString InId, world_control_msgs::PhysicsProperties InPhysicsProperties)
+		Request(FString in_source_object_id, FString in_other_object_id) 
 		{
-			Id = InId;
-			PhysicsProperties = InPhysicsProperties;
+			source_object_id = in_source_object_id;
+			other_object_id = in_other_object_id;
 		}
 
-		FString GetId()
+		FString GetSourceObjectId()
 		{
-			return Id;
+			return source_object_id;
 		}
 
-		world_control_msgs::PhysicsProperties GetPhysicsProperties()
+		FString GetOtherObjectId()
 		{
-			return PhysicsProperties;
+			return other_object_id;
 		}
 
 		virtual void FromJson(TSharedPtr<FJsonObject> JsonObject) override
 		{
-			Id = JsonObject->GetStringField("id");
-			PhysicsProperties.FromJson(JsonObject->GetObjectField("physics_properties"));
+			source_object_id = JsonObject->GetStringField("source_object_id");
+			other_object_id = JsonObject->GetStringField("other_object_id");
 		}
 
 		static Request GetFromJson(TSharedPtr<FJsonObject> JsonObject)
@@ -54,32 +52,36 @@ public:
 
 		FString ToString() const override
 		{
-			return "FROSSetPhysicsPropertiesSrv:Request {id = " + Id +
-				", physics_properties = " + PhysicsProperties.ToString() + "}";
+			return "FROSObjectToObjectSrv:Request {source_object_id = " + source_object_id + ", other_object_id = " + other_object_id + "}";
 		}
 
 		virtual TSharedPtr<FJsonObject> ToJsonObject() const override
 		{
 			TSharedPtr<FJsonObject> Object = MakeShareable<FJsonObject>(new FJsonObject());
-			Object->SetStringField(TEXT("id"), Id);
-			Object->SetObjectField(TEXT("physics_properties"), PhysicsProperties.ToJsonObject());
+			Object->SetStringField(TEXT("source_object_id"), source_object_id);
+			Object->SetStringField(TEXT("other_object_id"), other_object_id);
 			return Object;
 		}
-
 	};
 
 	class Response : public SrvResponse
 	{
 	private:
+		FString State;
 		bool Success;
 
-
 	public:
-		Response() {}
+		Response(){}
 
-		Response(bool InSuccess)
+		Response(FString InState, bool InSuccess)
 		{
+			State = InState;
 			Success = InSuccess;
+		}
+
+		FString GetState()
+		{
+			return State;
 		}
 
 		bool GetSuccess()
@@ -89,6 +91,7 @@ public:
 
 		virtual void FromJson(TSharedPtr<FJsonObject> JsonObject) override
 		{
+			State = JsonObject->GetStringField("state");
 			Success = JsonObject->GetBoolField("success");
 		}
 
@@ -101,16 +104,15 @@ public:
 
 		FString ToString() const override
 		{
-			return "FROSSetPhysicsPropertiesSrv:Response {success = " + (Success ? FString("True") : FString("False")) + "}";
+			return "FRosObjectToObjectState:Response {state = " + State + ", success = " + (Success ? FString("True") : FString("False")) + "}";
 		}
 
 		virtual TSharedPtr<FJsonObject> ToJsonObject() const override
 		{
 			TSharedPtr<FJsonObject> Object = MakeShareable<FJsonObject>(new FJsonObject());
+			Object->SetStringField(TEXT("state"), State);
 			Object->SetBoolField(TEXT("success"), Success);
 			return Object;
 		}
-
 	};
-
 };

@@ -1,24 +1,22 @@
-// Copyright 2017-2019, Institute for Artificial Intelligence - University of Bremen
-
 #pragma once
 #include "CoreMinimal.h"
 #include "ROSBridgeHandler.h"
 #include "RWCManager.h"
-#include "world_control_msgs/srv/DeleteModel.h"
+#include "world_control_msgs/srv/ObjectToObjectState.h"
 
-class FROSRemoveModelServer final : public FROSBridgeSrvServer
+class FROSObjectToObjectStateServer final : public FROSBridgeSrvServer
 {
 private:
-	FROSRemoveModelServer();
+	FROSObjectToObjectStateServer();
 	UWorld* World;
 	FThreadSafeBool ServiceSuccess;
 
 	URWCManager* Controller;
 
 public:
-	FROSRemoveModelServer(FString Namespace, FString Name, UWorld* InWorld,
-			URWCManager* InController) :
-		FROSBridgeSrvServer(Namespace + TEXT("/") + Name, TEXT("world_control_msgs/DeleteModel"))
+	FROSObjectToObjectStateServer(FString Namespace, FString Name, UWorld* InWorld,
+		URWCManager* InController) :
+		FROSBridgeSrvServer(Namespace + TEXT("/") + Name, TEXT("world_control_msgs/ObjectToObjectState"))
 	{
 		World = InWorld;
 		Controller = InController;
