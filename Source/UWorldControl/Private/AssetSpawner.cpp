@@ -49,15 +49,15 @@ bool FAssetSpawner::SpawnAsset(UWorld* World, const FSpawnAssetParams Params, FS
 		TArray<FOverlapResult> Results;
 		bool bIsBlocked = World->OverlapMultiByChannel(Results, Params.Location, Params.Rotator.Quaternion(), ECollisionChannel::ECC_PhysicsBody, FCollisionShape::MakeBox(Mesh->GetBoundingBox().GetExtent()));
 
-		if (bIsBlocked && Params.bSpawnCollisionCheck)
-		{
-			UE_LOG(LogTemp, Error, TEXT("[%s]: Spawn Location is obstructed for \"%s\""), *FString(__FUNCTION__), *Params.Id);
-			ErrType = "2";
-#if WITH_EDITOR
-			GEditor->EndTransaction();
-#endif
-			return false;
-		}
+// 		if (bIsBlocked && Params.bSpawnCollisionCheck)
+// 		{
+// 			UE_LOG(LogTemp, Error, TEXT("[%s]: Spawn Location is obstructed for \"%s\""), *FString(__FUNCTION__), *Params.Id);
+// 			ErrType = "2";
+// #if WITH_EDITOR
+// 			GEditor->EndTransaction();
+// #endif
+// 			return false;
+// 		}
 
 		//Actual Spawning MeshComponent
 		SpawnedItem = World->SpawnActor<AStaticMeshActor>(Params.Location, Params.Rotator, SpawnParams);
@@ -125,7 +125,11 @@ bool FAssetSpawner::SpawnAsset(UWorld* World, const FSpawnAssetParams Params, FS
 	SpawnedItem->Modify();
 	GEditor->EndTransaction();
 #endif
-	FinalActorName = SpawnedItem->GetName();
+
+    if (SpawnedItem->IsValidLowLevel())
+    {
+        FinalActorName = SpawnedItem->GetName();
+    }
 
 	return true;
 }

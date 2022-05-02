@@ -182,7 +182,7 @@ UStaticMesh* FAssetModifier::LoadMesh(FString Name, FString StartDir)
 			Loc.RemoveAt(Last, Loc.Len() - Last);
 
 			FString FoundPath = "StaticMesh'/Game/" + Loc + ".SM_" + Name + "'";
-            Mesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, *FoundPath));
+			Mesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, *FoundPath));	
 		}
 	}
 
